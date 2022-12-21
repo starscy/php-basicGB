@@ -1,5 +1,5 @@
 <?php
-require_once './classUser.php';
+require_once './User.php';
 require_once './task1.php';
 
 class Comment {

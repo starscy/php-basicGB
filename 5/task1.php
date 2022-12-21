@@ -1,5 +1,5 @@
 <?php
-require_once './classUser.php';
+require_once './User.php';
 
 class Task {
     private User $user;
