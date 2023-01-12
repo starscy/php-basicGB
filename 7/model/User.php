@@ -4,11 +4,16 @@ class User
 {
     private int $id;
     private string $username;
-    private string $name; // Добавляем свойство для имени
+    private ?string $name; // Добавляем свойство для имени
 
     public function __construct(string $username)
     {
         $this->username = $username;
+    }
+
+    public function getiD(): int
+    {
+        return $this->id;
     }
 
     // Сделаем методы получения и установки свойств

@@ -7,37 +7,22 @@ session_start();
 $pdo = require 'db.php'; // Подключим PDO
 $error = null;
 
-if (isset($_GET['action']) && $_GET['action'] === 'logout') {
-    unset($_SESSION['user']);
-    unset($_SESSION['tasks']);
-    header("Location: index.php");
-    die();
-}
-
-if (isset($_POST['username'], $_POST['password'])) {
+if (isset($_POST['username'] , $_POST['password'])) {
     ['username' => $username, 'password' => $password] = $_POST;
     $userProvider = new UserProvider($pdo);
-    $user = $userProvider->registerUser($username, $password);
+    $regUser = new User($username);
+    $regUser->setName($username);
+    $user = $userProvider->registerUser($regUser, $password);
+    $user = $userProvider->getByUsernameAndPassword($username, $password);
 
-   
-    // $user = $userProvider->registerUser($username, $password);
-
-
-    // $userProvider = new UserProvider($pdo);
-    // $user = $userProvider->getByUsernameAndPassword($username, $password);
-
-    // if ($user === null) {
-    //     $error = 'Пользователь с указанными учетными данными не найден';
-    // } else {
-    //     $_SESSION['user'] = $user;
-    //     header("Location: index.php");
-    //     die();
-    // }
+    if ($user === null) {
+        $error = 'Пользователь с указанными учетными данными не найден';
+    } else {
+        $_SESSION['user'] = $user;
+        $_SESSION['userId'] = $user->getId();
+        header("Location: index.php");
+        die();
+    }
 }
-
-
-
-
-
 
 include "view/register.php";

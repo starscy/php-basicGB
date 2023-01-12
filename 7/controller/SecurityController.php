@@ -9,6 +9,7 @@ $error = null;
 if (isset($_GET['action']) && $_GET['action'] === 'logout') {
     unset($_SESSION['user']);
     unset($_SESSION['tasks']);
+    unset($_SESSION['userId']);
     header("Location: index.php");
     die();
 }
@@ -16,13 +17,14 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
 if (isset($_POST['username'], $_POST['password'])) {
     ['username' => $username, 'password' => $password] = $_POST;
     $userProvider = new UserProvider($pdo);
+
     $user = $userProvider->getByUsernameAndPassword($username, $password);
-
-
+    
     if ($user === null) {
         $error = 'Пользователь с указанными учетными данными не найден';
     } else {
         $_SESSION['user'] = $user;
+        $_SESSION['userId'] = $user->getId();
         header("Location: index.php");
         die();
     }

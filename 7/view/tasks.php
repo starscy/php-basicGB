@@ -21,10 +21,19 @@
     <input type="text" name="task" placeholder="Опишите новую задачу">
     <input type="submit" value="Добавить">
 </form>
-<?php foreach ($tasks as $key => $task): ?>
+        <h2>Список незавершенных задач</h2>
+<?php foreach ($tasks as $task): ?>
     <div>
         <?=$task->getDescription()?>
-        <a href="/?controller=tasks&action=done&key=<?=$key?>">[Done]</a><br><br>
+        <a href="/?controller=tasks&action=done&id=<?=$task->getId()?>">[Done]</a>
+        <a href="/?controller=tasks&action=delete&id=<?=$task->getId()?>">[Delete]</a>
+    </div>
+<?php endforeach; ?>
+        <h2>Список завершенных задач</h2>
+<?php foreach ($doneTasks as $task): ?>
+    <div>
+        <?=$task->getDescription()?>
+        <a href="/?controller=tasks&action=delete&id=<?=$task->getId()?>">[Delete]</a>
     </div>
 <?php endforeach; ?>
 

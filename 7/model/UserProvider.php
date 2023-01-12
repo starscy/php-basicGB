@@ -9,7 +9,7 @@ class UserProvider
     public function __construct(PDO $pdo)
     {
         $this->pdo = $pdo;
-    } 
+    }
 
 
     public function registerUser(User $user, string $plainPassword): bool
@@ -17,14 +17,6 @@ class UserProvider
         $statement = $this->pdo->prepare(
             'INSERT INTO users (name, username, password) VALUES (:name, :username, :password)'
         );
-
-        $users =  $this->pdo->prepare(
-            'SELECT username FROM users '
-        );
-        print_r(
-            $users
-        );
-        die();
 
         return $statement->execute([
             'name' => $user->getName(),
@@ -44,5 +36,19 @@ class UserProvider
         ]);
 
         return $statement->fetchObject(User::class, [$username]) ?: null;
+    }
+
+    public function getAllUsers ()
+    {
+        $statement = $this->pdo->query(
+            'SELECT * FROM users'
+         );
+
+         $result = [];
+         while ($statement && $user = $statement->fetch()) {
+             $result[] = $user;
+         }
+         return $result;
+        // return $statement->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, User::class);
     }
 }
